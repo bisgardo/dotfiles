@@ -2,23 +2,10 @@
 
 # Command shortcut aliases.
 # - use colors in `ls`.
-alias ls='ls -G'
-alias l='ls -l'
-alias ll='l'
-alias la='ls -a'
-alias lla='ls -la'
 alias e='emacs'
 alias m='make'
 alias g='git'
 alias a='arc'
-
-alias ls..='ls ..'
-
-# Redefinition aliases
-# - resolve symbolic links in `pwd`.
-alias pwd='pwd -P'
-
-# Functions.
 
 # Prints path of ancestor folder n levels up.
 ..() {
@@ -67,14 +54,5 @@ rename() {
     local d="$(dirname "$1")"
     mv "$1" "$d/$2"
 }
-
-# From 'http://stackoverflow.com/a/22219586/883073'.
-withhead() {
-    read -r head
-    printf "%s\n" "$head"
-    exec "$@"
-}
-
-alias wh=withhead
 
 alias beep='echo -ne "\a"'

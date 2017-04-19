@@ -1,7 +1,10 @@
-#echo 'Processing bashrc.sh'
+echo 'Processing bashrc.sh'
 
-# Load path of dotfiles from .dotfiles.
+# [TODO VERIFY THAT $HOME IS DEFINED]
+
+# LOAD PATH OF DOTFILES FROM `.dotfiles`.
 DOTFILES_PATH="$(cat "$HOME/.dotfiles")"
 
-# Allow dotfiles to introduce itself.
-. "$DOTFILES_PATH/bash/init.sh"
+# SET INITIATOR VARIABLE AND BOOT DOTFILES
+DOTFILES_BOOTER='BASHRC'
+. "$DOTFILES_PATH/bash/boot.sh"
