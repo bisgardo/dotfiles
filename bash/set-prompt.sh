@@ -25,10 +25,86 @@ __dotfiles_git_ps1() {
 }
 
 __dotfiles_pwd_ps1() {
-    # TODO Search entire ancesor path.
     if [ -f "$PWD/.ps1" ]; then
-	. "$PWD/.ps1"
+	cat "$PWD/.ps1"
     fi
+}
+
+__dotfiles_enter_recursive() {
+    # TODO This function should be implementable as a loop?
+    
+    local dir="$1"
+    local root="$2"
+    
+    # TODO Should check that $root is a prefix of $dir to prevent
+    #      infinite looping (and otherwise ensure correctness).
+    
+    if [ "$dir" = "$root" ]; then
+	return
+    fi
+    
+    local subdir=
+    if [ "$dir" != '/' ]; then
+	subdir="$(dirname "$dir")"
+    fi
+    
+    __dotfiles_enter_recursive "$subdir" "$root"
+    
+    #echo "DEBUG: Entering $dir"
+    if [ -f "$dir/.dotfiles-dir" ]; then
+	unset DOTFILES_ON_DIR_ENTER
+	. "$dir/.dotfiles-dir"
+	if [ -n "$DOTFILES_ON_DIR_ENTER" ]; then
+	    echo "Entering $dir: $DOTFILES_ON_DIR_ENTER"
+	    eval $DOTFILES_ON_DIR_ENTER # No quotes!
+	fi
+    fi
+}
+
+# The directory that was the current directory the last time that
+# `__dotfiles_prompt_command` was called, with symlinks resolved.
+export DOTFILES_PREV_DIR=
+__dotfiles_prompt_command() {
+    # TODO Should be global?
+    local workdir="$(pwd -P)"
+    
+    if [ -z "$DOTFILES_PREV_DIR" ]; then
+	# Shell was just opened. "Enter" all the way from '/' (inclusive).
+	__dotfiles_enter_recursive "$workdir" ''
+	DOTFILES_PREV_DIR="$workdir"
+	return
+    fi
+    
+    # 0. Let CAD be the "deepest" common ancestor directory of
+    #    $workdir and $DOTFILES_PREV_DIR (with symlinks resolved).
+    # 1. Call "leave" functions from $DOTFILES_PREV_DIR to CAD.
+    
+    local dir="$DOTFILES_PREV_DIR"
+    
+    # Loop upwards in directory tree until "$dir/" is a prefix of "$workdir/".
+    # Slashes are necessary for matching full path components.
+    # The check doesn't work if $dir is '/', in which case there's also no leaving to do.
+    if [ "$dir" != '/' ]; then
+	local workdirs="$workdir/"
+	while [ "${workdirs#$dir/}" = "$workdirs" ]; do
+	    #echo "DEBUG: Leaving $dir"
+	    if [ -f "$dir/.dotfiles-dir" ]; then
+	        unset DOTFILES_ON_DIR_LEAVE
+	        . "$dir/.dotfiles-dir"
+	        if [ -n "$DOTFILES_ON_DIR_LEAVE" ]; then
+		    echo "Leaving $dir: $DOTFILES_ON_DIR_LEAVE"
+		    eval $DOTFILES_ON_DIR_LEAVE # No quotes!
+		fi
+	    fi
+	    
+	  dir="$(dirname "$dir")"
+	  #sleep 1
+	done
+    fi
+    
+    # 2. Call "enter" functions from CAD (which now equals $dir) down to $workdir.
+    __dotfiles_enter_recursive "$workdir" "$dir"
+    DOTFILES_PREV_DIR="$workdir"
 }
 
 __dotfiles_set_prompt() {
@@ -38,7 +114,7 @@ __dotfiles_set_prompt() {
     local PS1_COLOR_YELLOW='\[\e[0;33m\]'
     local PS1_COLOR_BOLD='\[\e[1m\]'
     local PS1_COLOR_RESET='\[\e[0m\]'
-
+    
     #local PS1_TITLE='\[\e]0;\u@\H (\d)\a\]'
     local PS1_STATUS=$PS1_COLOR_GREEN'$(__dotfiles_print_ok)'$PS1_COLOR_BOLD_RED'$(__dotfiles_print_error_code)'$PS1_COLOR_RESET
     local PS1_DIR=$PS1_COLOR_LIGHT_GRAY'\w'$PS1_COLOR_RESET
@@ -46,10 +122,10 @@ __dotfiles_set_prompt() {
     local PS1_GIT_BRANCH=$PS1_COLOR_YELLOW'$(__dotfiles_git_ps1 " (%s)")'$PS1_COLOR_RESET
     local PS1_MARKER=$PS1_COLOR_BOLD' \$'$PS1_COLOR_RESET
     local PS1_PWD='$(__dotfiles_pwd_ps1)'
-
+    
     # Set prompt.
     export PS1="$PS1_PWD$PS1_LS$PS1_STATUS$PS1_DIR$PS1_GIT_BRANCH$PS1_MARKER "
-    #export PROMPT_COMMAND=
+    export PROMPT_COMMAND=__dotfiles_prompt_command
 }
 
 __dotfiles_set_prompt
