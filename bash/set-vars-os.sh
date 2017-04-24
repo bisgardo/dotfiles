@@ -4,22 +4,24 @@
 #   - Linux: LINUX
 #   - Mac: OSX
 #   - Windows: WIN
-DOTFILES_OS=
+export DOTFILES_OS=
 # * DISTRIBUTION:
 #  - Linux: UBUNTU, ...
 #  - Windows: MINGW, CYGWIN
-DOTFILES_OS_DIST=
+export DOTFILES_OS_DIST=
 # SET OS (DISTRIBUTION) VERSION VARIABLE:
 # - Version of Windows: 7, 8, 10
 # - Version of OSX/MacOS: 10.10, ...
 # - Version of Ubuntu: 14.04, 16.04, ...
-DOTFILES_OS_VERS=
+export DOTFILES_OS_VERS=
 
 # SET `DOT_OS_*` VARIABLES [TODO Fall back to uname?]
 case "$OSTYPE" in
     linux*)
 	DOTFILES_OS=LINUX
 	if [ -f /etc/lsb-release ]; then
+	    local DISTRIB_ID
+	    local DISTRIB_RELEASE
 	    . /etc/lsb-release
 
 	    # Reset variables set by the command

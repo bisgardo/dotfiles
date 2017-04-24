@@ -15,16 +15,18 @@
 
 # Include aliases and functions in sorted order
 # (sorting being guaranteed by bash).
+source "$DOTFILES_PATH/bash/util.sh"
 for include in "$DOTFILES_PATH"/bash/includes/*.sh; do
-    . "$include"
+    source "$include"
 done
 
 # ADD SCRIPT DIR TO PATH
 export PATH="$PATH:$DOTFILES_PATH/bash/scripts"
 
 # Include prompt settings.
-. "$DOTFILES_PATH/bash/set-prompt.sh"
+source "$DOTFILES_PATH/bash/set-prompt.sh"
 
+# TODO Move somewhere else.
 if [ "$DOTFILES_BOOTER" = 'BASHPROFILE' ]; then
     # Make history length unlimited.
     export HISTFILESIZE=

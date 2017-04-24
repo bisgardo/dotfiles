@@ -125,7 +125,7 @@ __dotfiles_set_prompt() {
     
     # Set prompt.
     export PS1="$PS1_PWD$PS1_LS$PS1_STATUS$PS1_DIR$PS1_GIT_BRANCH$PS1_MARKER "
-    export PROMPT_COMMAND=__dotfiles_prompt_command
+    export PROMPT_COMMAND="__dotfiles_prompt_command;$PROMPT_COMMAND"
 }
 
 __dotfiles_set_prompt
