@@ -30,7 +30,7 @@ __dotfiles_pwd_ps1() {
     fi
 }
 
-__dotfiles_enter_recursive() {
+__dotfiles_dir_enter_recursive() {
     # TODO This function should be implementable as a loop?
     
     local dir="$1"
@@ -48,15 +48,15 @@ __dotfiles_enter_recursive() {
 	subdir="$(dirname "$dir")"
     fi
     
-    __dotfiles_enter_recursive "$subdir" "$root"
+    __dotfiles_dir_enter_recursive "$subdir" "$root"
     
     #echo "DEBUG: Entering $dir"
-    if [ -f "$dir/.dotfiles-dir" ]; then
-	unset DOTFILES_ON_DIR_ENTER
-	. "$dir/.dotfiles-dir"
-	if [ -n "$DOTFILES_ON_DIR_ENTER" ]; then
-	    echo "Entering $dir: $DOTFILES_ON_DIR_ENTER"
-	    eval $DOTFILES_ON_DIR_ENTER # No quotes!
+    if [ -f "$dir/.dir" ]; then
+	local onEnter
+	source "$dir/.dir"
+	if [ -n "$onEnter" ]; then
+	    echo "Entering $dir: $onEnter"
+	    eval $onEnter # No quotes!
 	fi
     fi
 }
@@ -64,13 +64,13 @@ __dotfiles_enter_recursive() {
 # The directory that was the current directory the last time that
 # `__dotfiles_prompt_command` was called, with symlinks resolved.
 export DOTFILES_PREV_DIR=
-__dotfiles_prompt_command() {
+__dotfiles_dir_update() {
     # TODO Should be global?
     local workdir="$(pwd -P)"
     
     if [ -z "$DOTFILES_PREV_DIR" ]; then
 	# Shell was just opened. "Enter" all the way from '/' (inclusive).
-	__dotfiles_enter_recursive "$workdir" ''
+	__dotfiles_dir_enter_recursive "$workdir" ''
 	DOTFILES_PREV_DIR="$workdir"
 	return
     fi
@@ -88,12 +88,12 @@ __dotfiles_prompt_command() {
 	local workdirs="$workdir/"
 	while [ "${workdirs#$dir/}" = "$workdirs" ]; do
 	    #echo "DEBUG: Leaving $dir"
-	    if [ -f "$dir/.dotfiles-dir" ]; then
-	        unset DOTFILES_ON_DIR_LEAVE
-	        . "$dir/.dotfiles-dir"
-	        if [ -n "$DOTFILES_ON_DIR_LEAVE" ]; then
-		    echo "Leaving $dir: $DOTFILES_ON_DIR_LEAVE"
-		    eval $DOTFILES_ON_DIR_LEAVE # No quotes!
+	    if [ -f "$dir/.dir" ]; then
+		local onDirLeave
+		source "$dir/.dir"
+		if [ -n "$onLeave" ]; then
+		    echo "Leaving $dir: $onLeave"
+		    eval $onLeave # No quotes!
 		fi
 	    fi
 	    
@@ -103,8 +103,12 @@ __dotfiles_prompt_command() {
     fi
     
     # 2. Call "enter" functions from CAD (which now equals $dir) down to $workdir.
-    __dotfiles_enter_recursive "$workdir" "$dir"
+    __dotfiles_dir_enter_recursive "$workdir" "$dir"
     DOTFILES_PREV_DIR="$workdir"
+}
+
+__dotfiles_prompt_command() {
+    __dotfiles_dir_update
 }
 
 __dotfiles_set_prompt() {
