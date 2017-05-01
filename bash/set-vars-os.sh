@@ -18,30 +18,30 @@ export DOTFILES_OS_VERS=
 # SET `DOT_OS_*` VARIABLES [TODO Fall back to uname?]
 case "$OSTYPE" in
     linux*)
-	DOTFILES_OS=LINUX
-	if [ -f /etc/lsb-release ]; then
-	    local DISTRIB_ID
-	    local DISTRIB_RELEASE
-	    . /etc/lsb-release
-
-	    # Reset variables set by the command
-	    # (converted to upper case - requires bash 4+).
-	    DOTFILES_OS_DIST="${DISTRIB_ID^^}"
-	    DOTFILES_OS_VERS="${DISTRIB_RELEASE^^}"
-	fi
-	;;
+        DOTFILES_OS=LINUX
+        if [ -f /etc/*-release ]; then
+            local DISTRIB_ID
+            local DISTRIB_RELEASE
+            source /etc/*-release
+            
+            # Reset variables set by the command
+            # (converted to upper case - requires bash 4+).
+            DOTFILES_OS_DIST="${DISTRIB_ID^^}"
+            DOTFILES_OS_VERS="${DISTRIB_RELEASE^^}"
+        fi
+    ;;
     darwin*)
-	DOTFILES_OS=OSX
-	;;
+        DOTFILES_OS=OSX
+        ;;
     win*) # [TODO Verify]
-	DOTFILES_OS=WIN
-	;;
+        DOTFILES_OS=WIN
+        ;;
     cygwin*) # [TODO Verify]
-	DOTFILES_OS=WIN
-	DOTFILES_OS_DIST=CYGWIN
-	;;
+        DOTFILES_OS=WIN
+        DOTFILES_OS_DIST=CYGWIN
+        ;;
     msys*) # [TODO Verify]
-	DOTFILES_OS=WIN
-	DOTFILES_OS_DIST=MINGW
-	;;
+        DOTFILES_OS=WIN
+        DOTFILES_OS_DIST=MINGW
+        ;;
 esac

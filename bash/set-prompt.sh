@@ -7,7 +7,7 @@ fi
 __dotfiles_print_ok() {
     local x=$?
     if [ $x -eq 0 ]; then
-	printf "[0] "
+        printf "[0] "
     fi
     return $x
 }
@@ -15,7 +15,7 @@ __dotfiles_print_ok() {
 __dotfiles_print_error_code() {
     local x=$?
     if [ $x -ne 0 ]; then
-	printf "[$x] "
+        printf "[$x] "
     fi
     return $x
 }
@@ -26,7 +26,7 @@ __dotfiles_git_ps1() {
 
 __dotfiles_pwd_ps1() {
     if [ -f "$PWD/.ps1" ]; then
-	cat "$PWD/.ps1"
+        cat "$PWD/.ps1"
     fi
 }
 
@@ -40,24 +40,24 @@ __dotfiles_dir_enter_recursive() {
     #      infinite looping (and otherwise ensure correctness).
     
     if [ "$dir" = "$root" ]; then
-	return
+        return
     fi
     
     local subdir=
     if [ "$dir" != '/' ]; then
-	subdir="$(dirname "$dir")"
+        subdir="$(dirname "$dir")"
     fi
     
     __dotfiles_dir_enter_recursive "$subdir" "$root"
     
     #echo "DEBUG: Entering $dir"
     if [ -f "$dir/.dir" ]; then
-	local onEnter
-	source "$dir/.dir"
-	if [ -n "$onEnter" ]; then
-	    echo "Entering $dir: $onEnter"
-	    eval $onEnter # No quotes!
-	fi
+        local onEnter
+        source "$dir/.dir"
+        if [ -n "$onEnter" ]; then
+            echo "Entering $dir: $onEnter"
+            eval $onEnter # No quotes!
+        fi
     fi
 }
 
@@ -69,10 +69,10 @@ __dotfiles_dir_update() {
     local workdir="$(pwd -P)"
     
     if [ -z "$DOTFILES_PREV_DIR" ]; then
-	# Shell was just opened. "Enter" all the way from '/' (inclusive).
-	__dotfiles_dir_enter_recursive "$workdir" ''
-	DOTFILES_PREV_DIR="$workdir"
-	return
+        # Shell was just opened. "Enter" all the way from '/' (inclusive).
+        __dotfiles_dir_enter_recursive "$workdir" ''
+        DOTFILES_PREV_DIR="$workdir"
+        return
     fi
     
     # 0. Let CAD be the "deepest" common ancestor directory of
@@ -85,21 +85,21 @@ __dotfiles_dir_update() {
     # Slashes are necessary for matching full path components.
     # The check doesn't work if $dir is '/', in which case there's also no leaving to do.
     if [ "$dir" != '/' ]; then
-	local workdirs="$workdir/"
-	while [ "${workdirs#$dir/}" = "$workdirs" ]; do
-	    #echo "DEBUG: Leaving $dir"
-	    if [ -f "$dir/.dir" ]; then
-		local onDirLeave
-		source "$dir/.dir"
-		if [ -n "$onLeave" ]; then
-		    echo "Leaving $dir: $onLeave"
-		    eval $onLeave # No quotes!
-		fi
-	    fi
-	    
-	  dir="$(dirname "$dir")"
-	  #sleep 1
-	done
+    local workdirs="$workdir/"
+    while [ "${workdirs#$dir/}" = "$workdirs" ]; do
+        #echo "DEBUG: Leaving $dir"
+        if [ -f "$dir/.dir" ]; then
+            local onDirLeave
+            source "$dir/.dir"
+            if [ -n "$onLeave" ]; then
+                echo "Leaving $dir: $onLeave"
+                eval $onLeave # No quotes!
+            fi
+        fi
+        
+      dir="$(dirname "$dir")"
+      #sleep 1
+    done
     fi
     
     # 2. Call "enter" functions from CAD (which now equals $dir) down to $workdir.

@@ -7,4 +7,4 @@ DOTFILES_PATH="$(cat "$HOME/.dotfiles")"
 
 # SET INITIATOR VARIABLE AND BOOT DOTFILES
 DOTFILES_BOOTER='BASHRC'
-. "$DOTFILES_PATH/bash/boot.sh"
+source "$DOTFILES_PATH/bash/boot.sh"

@@ -11,7 +11,7 @@ DOTFILES_PATH="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)"
 echo "Installing dotfiles in dir '$DOTFILES_PATH' into $HOME/.dotfiles"
 echo $DOTFILES_PATH > "$HOME/.dotfiles"
 
-# Backing up .bashrc and .bash_profile.
+# Back up .bashrc and .bash_profile.
 __backup() {
     if [ -f "$1" ]; then
         local bash_path=''
@@ -21,9 +21,9 @@ __backup() {
             if [ "$input" = "$bash_path" ]; then
                 break
             fi
-
+            
             echo "Debug: Entered '$input'"
-
+            
             # Confirmation of not backing up only happens
             # when other paths have been attempted.
             bash_path="$input"
@@ -34,10 +34,10 @@ __backup() {
                 echo "File '$bash_path' already exists. Please repeat path to confirm overwrite or enter another one."
                 continue
             fi
-
+            
             break
         done
-
+        
         if [ -n "$bash_path" ]; then
             mv "$1" "$bash_path"
         else
@@ -70,14 +70,14 @@ __set_hostname() {
         echo 'Not setting hostname'
         return 0
     fi
-
+    
     echo "Entering sudo mode to set hostname to '$input'"
     sudo echo 'OK'
     if [ $? -ne 0 ]; then
         echo "Not setting hostname"
         return 0
     fi
-
+    
     case "$os" in
         'Darwin')
             sudo scutil --set HostName "$input"
@@ -85,11 +85,11 @@ __set_hostname() {
         'Linux')
             sudo hostname "$input"
             ;;
-	*)
-	    >&2 echo "ERROR: Cannot set hostname on OS $os"
+        *)
+            >&2 echo "ERROR: Cannot set hostname on OS $os"
             ;;
     esac
-
+    
     return $?
 }
 
