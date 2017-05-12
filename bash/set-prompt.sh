@@ -1,6 +1,7 @@
 # Reset PS1 in honor of dumb devices like Emacs Shell.
 if [ "$DOTFILES_BOOTER" != 'BASHPROFILE' -a "$DOTFILES_OS_DIST" != 'UBUNTU' ]; then
     PS1='$ '
+    PROMPT_COMMAND=
     return
 fi
 
@@ -21,94 +22,23 @@ __dotfiles_print_error_code() {
 }
 
 __dotfiles_git_ps1() {
+    local x=$?
     [ -n "$(type -t __git_ps1)" ] && __git_ps1 "$1"
+    return $x
 }
 
 __dotfiles_pwd_ps1() {
+    local x=$?
     if [ -f "$PWD/.ps1" ]; then
         cat "$PWD/.ps1"
     fi
+    return $x
 }
 
-__dotfiles_dir_enter_recursive() {
-    # TODO This function should be implementable as a loop?
-    
-    local dir="$1"
-    local root="$2"
-    
-    # TODO Should check that $root is a prefix of $dir to prevent
-    #      infinite looping (and otherwise ensure correctness).
-    
-    if [ "$dir" = "$root" ]; then
-        return
-    fi
-    
-    local subdir=
-    if [ "$dir" != '/' ]; then
-        subdir="$(dirname "$dir")"
-    fi
-    
-    __dotfiles_dir_enter_recursive "$subdir" "$root"
-    
-    #echo "DEBUG: Entering $dir"
-    if [ -f "$dir/.dir" ]; then
-        local onEnter
-        source "$dir/.dir"
-        if [ -n "$onEnter" ]; then
-            echo "Entering $dir: $onEnter"
-            eval $onEnter # No quotes!
-        fi
-    fi
-}
-
-# The directory that was the current directory the last time that
-# `__dotfiles_prompt_command` was called, with symlinks resolved.
-export DOTFILES_PREV_DIR=
-__dotfiles_dir_update() {
-    # TODO Should be global?
-    local workdir="$(pwd -P)"
-    
-    if [ -z "$DOTFILES_PREV_DIR" ]; then
-        # Shell was just opened. "Enter" all the way from '/' (inclusive).
-        __dotfiles_dir_enter_recursive "$workdir" ''
-        DOTFILES_PREV_DIR="$workdir"
-        return
-    fi
-    
-    # 0. Let CAD be the "deepest" common ancestor directory of
-    #    $workdir and $DOTFILES_PREV_DIR (with symlinks resolved).
-    # 1. Call "leave" functions from $DOTFILES_PREV_DIR to CAD.
-    
-    local dir="$DOTFILES_PREV_DIR"
-    
-    # Loop upwards in directory tree until "$dir/" is a prefix of "$workdir/".
-    # Slashes are necessary for matching full path components.
-    # The check doesn't work if $dir is '/', in which case there's also no leaving to do.
-    if [ "$dir" != '/' ]; then
-    local workdirs="$workdir/"
-    while [ "${workdirs#$dir/}" = "$workdirs" ]; do
-        #echo "DEBUG: Leaving $dir"
-        if [ -f "$dir/.dir" ]; then
-            local onDirLeave
-            source "$dir/.dir"
-            if [ -n "$onLeave" ]; then
-                echo "Leaving $dir: $onLeave"
-                eval $onLeave # No quotes!
-            fi
-        fi
-        
-      dir="$(dirname "$dir")"
-      #sleep 1
-    done
-    fi
-    
-    # 2. Call "enter" functions from CAD (which now equals $dir) down to $workdir.
-    __dotfiles_dir_enter_recursive "$workdir" "$dir"
-    DOTFILES_PREV_DIR="$workdir"
-}
+source "$DOTFILES_PATH/bash/modules/dirs/dirs.sh"
 
 __dotfiles_prompt_command() {
-    __dotfiles_dir_update
+    __dirs_update "$(pwd -P)"
 }
 
 __dotfiles_set_prompt() {

@@ -20,8 +20,8 @@ for include in "$DOTFILES_PATH"/bash/includes/*.sh; do
     source "$include"
 done
 
-# ADD SCRIPT DIR TO PATH
-export PATH="$PATH:$DOTFILES_PATH/bash/scripts"
+# ADD SCRIPT AND LOCAL BIN DIRS TO PATH.
+export PATH="$PATH:$HOME/.bin:$DOTFILES_PATH/bash/scripts"
 
 # Include prompt settings.
 source "$DOTFILES_PATH/bash/set-prompt.sh"
