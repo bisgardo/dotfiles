@@ -1,4 +1,4 @@
-echo 'Processing bashrc.sh'
+#echo 'Processing bashrc.sh'
 
 # [TODO VERIFY THAT $HOME IS DEFINED]
 

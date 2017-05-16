@@ -1,7 +1,6 @@
-# Reset PS1 in honor of dumb devices like Emacs Shell.
+# Reset PS1 in honor of dumb devices like Emacs Shell (unless on Ubuntu...).
 if [ "$DOTFILES_BOOTER" != 'BASHPROFILE' -a "$DOTFILES_OS_DIST" != 'UBUNTU' ]; then
     PS1='$ '
-    PROMPT_COMMAND=
     return
 fi
 
@@ -35,12 +34,6 @@ __dotfiles_pwd_ps1() {
     return $x
 }
 
-source "$DOTFILES_PATH/bash/modules/dirs/dirs.sh"
-
-__dotfiles_prompt_command() {
-    __dirs_update "$(pwd -P)"
-}
-
 __dotfiles_set_prompt() {
     local PS1_COLOR_LIGHT_GRAY='\[\e[0;37m\]'
     local PS1_COLOR_GREEN='\[\e[0;32m\]'
@@ -59,7 +52,6 @@ __dotfiles_set_prompt() {
     
     # Set prompt.
     export PS1="$PS1_PWD$PS1_LS$PS1_STATUS$PS1_DIR$PS1_GIT_BRANCH$PS1_MARKER "
-    export PROMPT_COMMAND="__dotfiles_prompt_command;$PROMPT_COMMAND"
 }
 
 __dotfiles_set_prompt
