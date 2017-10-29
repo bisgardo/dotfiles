@@ -11,7 +11,7 @@ it should not yet be considered stable.**
 ## Install
 
 * Clone dotfiles into a directory of choice:
-  `git clone git@github.com:halleknast/dotfiles.git`.
+  `git clone --recursive git@github.com:halleknast/dotfiles.git`.
 
 * Run install script `install.sh`.
 
