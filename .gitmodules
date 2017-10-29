@@ -1,0 +1,3 @@
+[submodule "modules/M-O"]
+	path = modules/M-O
+	url = https://github.com/halleknast/M-O
