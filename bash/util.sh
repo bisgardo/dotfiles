@@ -1,5 +1,11 @@
 # Base utilities that includes may rely upon.
 
+# TODO Add all functions for standard "tricks", substitution etc.
+#      - names/exemplifies common constructs
+#      - gives solutions to pretty solutions
+#      - defines an interface that can be implemented seperately
+#        for different shells (separate project?).
+
 ################
 # INPUT/OUTPUT #
 ################
@@ -7,22 +13,30 @@
 # Echo to std err.
 alias errcho='>&2 echo'
 
+# Play a "beep".
+alias beep='echo -ne "\a"'
+
+# Function for setting status code.
+status() {
+    return $1
+}
+
 ###################
 # STRING MATCHING #
 ###################
 
 # Test if $1 is a prefix of $2.
 is_prefix() {
-    local prefix="$1"
-    local string="$2"
+    local -r prefix="$1"
+    local -r string="$2"
     
     # Special case: The empty string is a prefix of any string.
     if [ -z "$prefix" ]; then
-        return 0
+        return
     fi
     
     # $string with the (literal) prefix $prefix removed.
-    local suffix="${string#"$prefix"}"
+    local -r suffix="${string#"$prefix"}"
     
     # If $prefix is a (non-empty) prefix, then
     # $suffix will be different from $string.
@@ -31,16 +45,16 @@ is_prefix() {
 
 # Test if $1 is a pattern that matches a prefix of $2.
 matches_prefix() {
-    local prefix="$1"
-    local string="$2"
+    local -r prefix="$1"
+    local -r string="$2"
     
     # Special case: The empty string is a prefix of any string.
     if [ -z "$prefix" ]; then
-        return 0
+        return
     fi
     
     # $string with the longest matching prefix of the pattern $prefix removed.
-    local suffix="${string##$prefix}"
+    local -r suffix="${string##$prefix}"
     
     # If $prefix is a (non-empty) prefix, then
     # $suffix will be different from $string.
@@ -49,16 +63,16 @@ matches_prefix() {
 
 # Test if $1 is a suffix of $2.
 is_suffix() {
-    local suffix="$1"
-    local string="$2"
+    local -r suffix="$1"
+    local -r string="$2"
     
     # Special case: The empty string is a suffix of any string.
     if [ -z "$suffix" ]; then
-        return 0
+        return
     fi
     
     # $string with the (literal) suffix $suffix removed.
-    local prefix="${string%"$suffix"}"
+    local -r prefix="${string%"$suffix"}"
     
     # If $suffix is a (non-empty) suffix, then
     # $suffix will be different from $string.
@@ -67,8 +81,8 @@ is_suffix() {
 
 # Test if $1 is a pattern that matches a suffix of $2.
 matches_suffix() {
-    local suffix="$1"
-    local string="$2"
+    local -r suffix="$1"
+    local -r string="$2"
     
     # Special case: The empty string is a suffix of any string.
     if [ -z "$suffix" ]; then
@@ -76,9 +90,34 @@ matches_suffix() {
     fi
     
     # $string with the longest matching part of the pattern $suffix removed.
-    local prefix="${string%%$suffix}"
+    local -r prefix="${string%%$suffix}"
     
     # If $suffix is a (non-empty) suffix, then
     # $prefix will be different from $string.
     [ "$prefix" != "$string" ]
+}
+
+#########################
+# STRING TRANSFORMATION #
+#########################
+
+split() {
+    local -r string="$1"
+    local -r delimiter="$2"
+    if [ -n "$string" ]; then
+        local part
+        while read -d "$delimiter" part; do
+            echo "$part"
+        done <<< "$string"
+        echo "$part"
+    fi
+}
+
+join() {
+    local -r delimiter="$1"
+    local part
+    while read part; do
+        echo -n "$part$delimiter"
+    done
+    echo "$part"
 }

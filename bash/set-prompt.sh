@@ -42,6 +42,10 @@ __dotfiles_set_prompt() {
     local PS1_COLOR_BOLD='\[\e[1m\]'
     local PS1_COLOR_RESET='\[\e[0m\]'
     
+    # For Git branch info in PS1.
+    export GIT_PS1_SHOWDIRTYSTATE=true
+    export GIT_PS1_SHOWUNTRACKEDFILES=true
+    
     #local PS1_TITLE='\[\e]0;\u@\H (\d)\a\]'
     local PS1_STATUS=$PS1_COLOR_GREEN'$(__dotfiles_print_ok)'$PS1_COLOR_BOLD_RED'$(__dotfiles_print_error_code)'$PS1_COLOR_RESET
     local PS1_DIR=$PS1_COLOR_LIGHT_GRAY'\w'$PS1_COLOR_RESET
