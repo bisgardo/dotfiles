@@ -1,8 +1,8 @@
 # Mac (with brew): Setup Git autocompletion.
 if [ -x "$(command -v brew)" ]; then
-    if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
-        source "$(brew --prefix)/etc/bash_completion"
-    fi
+	if [ "$DOTFILES_SHELL" = 'BASH' -a -f $(brew --prefix)/etc/bash_completion ]; then
+		source $(brew --prefix)/etc/bash_completion
+	fi
 fi
 
 # https://stackoverflow.com/a/12142066

@@ -1,8 +1,8 @@
 # (Re)register M-O module.
 
 reregister_MO() {
-    # Call `unregister_MO()` if it exists (i.e., if M-O is currenty registered).
-    type -t unregister_MO > /dev/null && unregister_MO
+    # Call `unregister_MO` if it exists (i.e., unregister M-O if it's currenty registered).
+    declare -f unregister_MO > /dev/null && unregister_MO
     
     # Set up environment.
     MO_LOG_LEVEL="$1"
@@ -18,11 +18,17 @@ reregister_MO() {
         )
     fi
     
-    # Load and register M-O with extensions.
+    # Load M-O with extensions.
     source "$MO_PATH/M-O.sh"
-    source "$MO_PATH/register.bash"
     source "$MO_PATH/extensions/action-helpers.sh"
     source "$MO_PATH/extensions/default-action.sh"
+    
+    # Register M-O.
+    if [ "$DOTFILES_SHELL" = 'ZSH' ]; then
+        source "$MO_PATH/register.zsh"
+    else
+        source "$MO_PATH/register.bash"
+    fi
 }
 
 reregister_MO 0

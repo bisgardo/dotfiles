@@ -21,7 +21,7 @@ for include in "$DOTFILES_PATH"/bash/includes/*.sh; do
 done
 
 # ADD SCRIPT AND LOCAL BIN DIRS TO PATH.
-export PATH="$PATH:$HOME/.bin:$DOTFILES_PATH/bash/scripts"
+export PATH="$DOTFILES_PATH/path-prepends:$PATH:$HOME/.bin:$DOTFILES_PATH/path-appends"
 
 # Include prompt settings.
 source "$DOTFILES_PATH/bash/set-prompt.sh"
