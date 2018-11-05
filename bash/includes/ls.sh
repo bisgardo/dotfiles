@@ -17,5 +17,6 @@ fi
 alias l='ls -CF'
 alias ll='ls -alF'
 alias la='ls -A'
+alias lla='ls -alFA'
 
 alias ls..='ls ..'
