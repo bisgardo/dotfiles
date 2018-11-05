@@ -28,7 +28,7 @@ source "$DOTFILES_PATH/bash/set-prompt.sh"
 
 # TODO Move somewhere else.
 if [ "$DOTFILES_BOOTER" = 'BASHPROFILE' ]; then
-    # Make history length unlimited.
-    export HISTFILESIZE=
-    export HISTSIZE=
+	# Make history length unlimited.
+	export HISTFILESIZE=
+	export HISTSIZE=
 fi

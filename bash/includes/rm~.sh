@@ -1,4 +1,4 @@
 rm~() {
-    # TODO Remove recursively.
-    rm -Iv *~
+	# TODO Remove recursively.
+	rm -Iv *~
 }
