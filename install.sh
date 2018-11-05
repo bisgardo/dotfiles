@@ -1,11 +1,10 @@
-#if [ "$0" = '-bash' ]; then
-#    echo "Install script should not be sourced"
-#    return 1
-#fi
+sourced=
+if [ "$0" = '-bash' ]; then
+    sourced=1
+fi
 
 # Write absolute path of dotfiles dir into .dotfiles such that
 # .bachrc and .bash_profile know where to init from.
-#DOTFILES_PATH="$(cd $(dirname "$0") && pwd -P)"
 DOTFILES_PATH="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)"
 
 echo "Installing dotfiles in dir '$DOTFILES_PATH' into $HOME/.dotfiles"
@@ -101,9 +100,13 @@ __set_hostname
 #echo 'Open new terminal or run the following command:'
 #echo ". $HOME/.bash_profile"
 
-## Source .bash_profile right away.
-#. .bash_profile
+# Source .bash_profile right away.
+echo "Sourcing .bash_profile"
+source .bash_profile
 
-echo 'Installation complete. Please press ENTER to close terminal.'
-read
-exit
+#if [ "$sourced" ]; then
+#    echo 'Installation complete. Please press ENTER to close terminal.'
+#    read
+#    exit
+#fi
+

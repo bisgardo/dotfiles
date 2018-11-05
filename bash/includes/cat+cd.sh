@@ -58,6 +58,7 @@ cl..() {
 }
 
 # Change working directory or output file contents.
+# TODO Do the same for l; ls vs less.
 c() {
     if [ -f "$1" ]; then
         cat "$1"
