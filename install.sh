@@ -102,7 +102,7 @@ __set_hostname
 
 # Source .bash_profile right away.
 echo "Sourcing .bash_profile"
-source .bash_profile
+source ~/.bash_profile
 
 #if [ "$sourced" ]; then
 #	echo 'Installation complete. Please press ENTER to close terminal.'
