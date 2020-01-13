@@ -2,8 +2,7 @@
 # "change directory to dir of last file that was `cat`'ed"
 alias __cat="$(which cat)"
 cat() {
-	# TODO Verify that this expands args with spaces in them correctly.
-	__cat $@
+	__cat "$@"
 	__CAT_DIR="$(dirname "$1")"
 }
 

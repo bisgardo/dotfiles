@@ -1,8 +1,8 @@
-# Reset PS1 in honor of dumb devices like Emacs Shell (unless on Ubuntu...).
-if [ "$DOTFILES_BOOTER" != 'BASHPROFILE' -a "$DOTFILES_OS_DIST" != 'UBUNTU' ]; then
-	PS1='$ '
-	return
-fi
+## Reset PS1 in honor of dumb devices like Emacs Shell (unless on Ubuntu...).
+#if [ "$DOTFILES_BOOTER" != 'BASHPROFILE' -a "$DOTFILES_OS_DIST" != 'UBUNTU' ]; then
+#	PS1='$ '
+#	return
+#fi
 
 __dotfiles_print_ok() {
 	local x=$?

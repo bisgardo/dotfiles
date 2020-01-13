@@ -24,7 +24,7 @@ _set_os_vars() {
 			if [ -f /etc/os-release ]; then
 				local ID
 				local VERSION_ID
-				source /etc/lsb-release
+				source /etc/os-release
 				
 				# Reset variables set by the command
 				# (converted to upper case - requires bash 4+).
