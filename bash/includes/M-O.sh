@@ -1,7 +1,7 @@
 # (Re)register M-O module.
 
 reregister_MO() {
-	# Call `unregister_MO` if it exists (i.e., unregister M-O if it's currenty registered).
+	# Call `unregister_MO` if it exists (i.e., unregister M-O if it's currently registered).
 	declare -f unregister_MO > /dev/null && unregister_MO
 	
 	# Set up environment.
@@ -27,10 +27,10 @@ reregister_MO() {
 	else
 		source "$MO_PATH/register.bash"
 	fi
-	source "$MO_PATH/actions/config-file-handler.sh"
-	source "$MO_PATH/actions/default-handler.sh"
-	source "$MO_PATH/actions/util.sh"
-	source "$MO_PATH/actions/common.sh"
+	source "$MO_PATH/handler/enter-leave.sh"
+	source "$MO_PATH/action/load-file.sh"
+	source "$MO_PATH/action/load-default.sh"
+	source "$MO_PATH/action/common.sh"
 }
 
 reregister_MO 0

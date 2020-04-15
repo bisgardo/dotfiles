@@ -5,6 +5,8 @@ if [ -x "$(command -v brew)" ]; then
 	fi
 fi
 
+ENABLE_GIT_PS1=y
+
 # https://stackoverflow.com/a/12142066
 git-current-branch() {
 	git rev-parse --abbrev-ref HEAD

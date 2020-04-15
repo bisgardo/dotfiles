@@ -22,7 +22,7 @@ __dotfiles_print_error_code() {
 
 __dotfiles_git_ps1() {
 	local x=$?
-	[ -n "$(type -t __git_ps1)" ] && __git_ps1 "$1"
+	[ "$ENABLE_GIT_PS1" = y ] && [ -n "$(type -t __git_ps1)" ] && __git_ps1 "$1"
 	return $x
 }
 
