@@ -42,3 +42,13 @@ if ! shopt -oq posix; then
 #    . /etc/bash_completion
   fi
 fi
+
+# TODO: Duplicated from M-O (because bash-completion overrides it).
+function quote() {
+	local p
+	for v in "$@"; do
+		local q="${v//\'/\'\\\'\'}"
+		printf "$p'%s'" "$q"
+		p=' '
+	done
+}

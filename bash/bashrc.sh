@@ -1,4 +1,4 @@
-#echo 'Processing bashrc.sh'
+echo "Processing bashrc.sh (previous booter: $DOTFILES_BOOTER)"
 
 # [TODO VERIFY THAT $HOME IS DEFINED]
 
@@ -7,5 +7,5 @@ DOTFILES_PATH="$(cat "$HOME/.dotfiles")"
 
 # SET INITIATOR VARIABLE AND BOOT DOTFILES
 DOTFILES_SHELL='BASH'
-DOTFILES_BOOTER='BASHRC'
+export DOTFILES_BOOTER='BASHRC'
 source "$DOTFILES_PATH/bash/boot.sh"

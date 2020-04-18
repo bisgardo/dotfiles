@@ -20,6 +20,10 @@ reregister_MO() {
 	
 	# Load M-O with extensions.
 	source "$MO_PATH/M-O.sh"
+	source "$MO_PATH/handler/enter-leave.sh"
+	source "$MO_PATH/action/load-file.sh"
+	source "$MO_PATH/action/load-default.sh"
+	source "$MO_PATH/action/common.sh"
 	
 	# Register M-O.
 	if [ "$DOTFILES_SHELL" = 'ZSH' ]; then
@@ -27,10 +31,6 @@ reregister_MO() {
 	else
 		source "$MO_PATH/register.bash"
 	fi
-	source "$MO_PATH/handler/enter-leave.sh"
-	source "$MO_PATH/action/load-file.sh"
-	source "$MO_PATH/action/load-default.sh"
-	source "$MO_PATH/action/common.sh"
 }
 
 reregister_MO 0
