@@ -5,7 +5,7 @@ if [ -x "$(command -v brew)" ]; then
 	fi
 fi
 
-#ENABLE_GIT_PROMPT=y
+ENABLE_GIT_PROMPT=y
 
 # https://stackoverflow.com/a/12142066
 git-current-branch() {
