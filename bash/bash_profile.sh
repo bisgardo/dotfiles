@@ -9,3 +9,5 @@ DOTFILES_PATH="$(cat "$HOME/.dotfiles")"
 DOTFILES_SHELL='BASH'
 export DOTFILES_BOOTER='BASHPROFILE'
 source "$DOTFILES_PATH/bash/boot.sh"
+
+export PATH="$HOME/.cargo/bin:$PATH"

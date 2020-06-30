@@ -102,15 +102,10 @@ matches_suffix() {
 #########################
 
 split() {
-	local -r string="$1"
-	local -r delimiter="$2"
-	if [ -n "$string" ]; then
-		local part
-		while read -d "$delimiter" part; do
-			echo "$part"
-		done <<< "$string"
-		echo "$part"
-	fi
+	local -r delimiter="$1"
+	local part
+	while read -d "$delimiter" part; do echo "$part"; done
+	echo "$part"
 }
 
 join() {

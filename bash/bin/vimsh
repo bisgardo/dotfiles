@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+file="$1"
+
+if [ ! -e "$file" ]; then
+    cat << EOF > "$file" 
+#!/usr/bin/env bash
+
+EOF
+fi
+
+chmod +x "$file"
+vim +2 "$file"
