@@ -2,8 +2,13 @@
 
 file="$1"
 
+if [ -z "$file" ]; then
+	>&2 echo "file argument required"
+	exit 1
+fi
+
 if [ ! -e "$file" ]; then
-    cat << EOF > "$file" 
+	cat << EOF > "$file" 
 #!/usr/bin/env bash
 
 EOF
