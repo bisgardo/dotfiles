@@ -1,5 +1,5 @@
-function eval_stack {
-        echo '>' stack "$@" 
+function eval_command_stack {
+        echo '>' command stack "$@"
         eval command stack "$@" 2>&1 | while IFS= read -r l; do
             echo "  > $l"
         done
@@ -7,12 +7,12 @@ function eval_stack {
         return ${PIPESTATUS[0]}
 }
 
-function stack {
+function stack_traced {
 	case "$1" in
 		build)
 			# Track time of 'stack build'.
 			local -r t0="$(date +%s)"
-			eval_stack "$@" # $MO_STACK_OPTS
+			eval_command_stack "$@" # $MO_STACK_OPTS
                         local -r x=$?
 			local -r t1="$(date +%s)"
 			# Record time if strictly more than 1s.
@@ -24,7 +24,7 @@ function stack {
 		test)
 			# Run 'stack build' first to ensure that only compilation
 			# time is tracked.
-			stack build $MO_STACK_OPTS --test --no-run-tests && eval_stack "$@" $MO_STACK_OPTS 
+			stack build $MO_STACK_OPTS --test --no-run-tests && eval_command_stack "$@" $MO_STACK_OPTS
 	    		;;
                 *)
                         # For 'stack exec' etc.
@@ -36,5 +36,13 @@ function stack {
 }
 
 # Make available to subshells (like run.sh).
-export -f eval_stack
-export -f stack 
+export -f eval_command_stack
+export -f stack_traced
+
+function set_stack_traced {
+	alias stack=stack_traced
+}
+
+function unset_stack_traced {
+	alias stack='command stack'
+}

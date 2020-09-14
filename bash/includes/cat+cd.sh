@@ -12,6 +12,13 @@ ct() {
 	fi
 }
 
+# cd() {
+# 	local l
+# 	builtin cd "$@" | while read l; do
+# 		echo 'cd: $l'
+# 	done
+# }
+
 # TODO Consider replacing all of `cd..`, `cl..`, and `c..` with just `..`
 #      (or letting them take no arguments).
 
