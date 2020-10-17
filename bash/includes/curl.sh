@@ -1,0 +1,1 @@
+alias curl='curl -sS'
