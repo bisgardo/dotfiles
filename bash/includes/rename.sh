@@ -1,4 +1,4 @@
-# Rename file or directory relative to its current directory.
+# Rename file or directory relative to its current directory ("relative mv").
 rename() {
 	if [ "$#" -ne 2 ]; then
 		>&2 echo 'Usage: rename PATH NEW_NAME'
