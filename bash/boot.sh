@@ -34,7 +34,7 @@ if [ "$DOTFILES_BOOTER" = 'BASHPROFILE' ]; then
 fi
 
 # TODO Move somewhere else.
-# enable bash completion in interactive shells
+# Enable bash completion in interactive shells.
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
