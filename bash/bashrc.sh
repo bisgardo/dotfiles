@@ -1,3 +1,7 @@
+# Bail if noninteractive shell
+# (such as 'scp'; see 'https://unix.stackexchange.com/q/154395/129308').
+[ -z "$PS1" ] && return
+
 echo "Processing bashrc.sh (previous booter: $DOTFILES_BOOTER)"
 
 # [TODO VERIFY THAT $HOME IS DEFINED]
