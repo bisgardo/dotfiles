@@ -11,8 +11,10 @@ if [ ! -e "$file" ]; then
 	cat << EOF > "$file" 
 #!/usr/bin/env bash
 
+set -euxo pipefail
+
 EOF
 fi
 
 chmod +x "$file"
-vim +2 "$file"
+vim +4 "$file"
