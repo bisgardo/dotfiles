@@ -11,6 +11,9 @@
 
 #echo "Initializing dotfiles"
 
+# Do reasonable settings.
+set -o pipefail
+
 . "$DOTFILES_PATH/bash/set-vars-os.sh"
 
 # Include aliases and functions in sorted order
