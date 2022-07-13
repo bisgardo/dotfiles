@@ -1,17 +1,19 @@
 # Dotfiles
 
-Small framework for and implementation of an
-extensible cross-platform dotfiles repository.
+Small framework for and implementation of an extensible cross-platform dotfiles repository.
 
-**Important: This project work in (rather slow) progress.
+**Important: This project work in (very slow) progress.
 While it's currently being used on a (more or less) daily basis on both
 Linux, Windows, and MacOS systems,
-it should not yet be considered stable.**
+it should not be considered stable.**
 
 ## Install
 
 * Clone dotfiles into a directory of choice:
-  `git clone --recursive git@github.com:halleknast/dotfiles.git`.
+
+  ```sh
+  git clone --recurse-submodules git@github.com:bisgardo/dotfiles.git
+  ```
 
 * Run install script `install.sh`.
 
